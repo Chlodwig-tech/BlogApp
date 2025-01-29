@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Stwórz Post{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        <h1>Napisz posta</h1>
+        <form method="POST"> {% csrf_token %}
+            
+            {% for field in post_form %}
+                <div class="form-floating mb-3 mt-3">
+                    {{ field }}
+                    {{ field.label_tag }}
+                </div>
+            {% endfor %}
+            {{post_form.media}}
+            <button class="btn btn-primary" type="submit">Wyślij</button>
+        </form>
+    </div>
+
+
+{% endblock %}

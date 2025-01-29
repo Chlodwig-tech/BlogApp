@@ -1,0 +1,12 @@
+{% for comment in comments %}
+    <div class="comment" style="margin-left: 20px;">
+        <p>{{ comment.content }}</p>
+        <p>Posted on {{ comment.publish_date}}</p>
+        
+        {% if comment.replies.count > 0 %}
+            <div class="replies">
+                {% include 'blog/comments_tree.html' with comments=comment.replies.all %}
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

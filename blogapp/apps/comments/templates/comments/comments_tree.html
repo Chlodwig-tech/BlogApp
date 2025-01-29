@@ -1,0 +1,30 @@
+{% for comment in comments %}
+<div class="d-flex flex-start">
+    <a href="/profiles/{{comment.author}}"><img class="rounded-circle shadow-1-strong me-3" src="{{comment.author.img_src}}" alt="{{comment.author}}_profile_image" width="65" height="65"></a>
+    <div class="flex-grow-1 flex-shrink-1">
+        <div>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="mb-1">
+                <a href="/profiles/{{comment.author}}" style="text-decoration: none;" >{{comment.author}}</a>
+                <span class="small">- {{ comment.time_passed_from_date}}</span>
+                <a class="showContainer btn" data-div-id="divContainer{{ comment.id }}"><i class="bi bi-reply"></i> </i><span class="small"></span></a>
+                <i class="bi bi-plus-circle"></i>
+              </p>
+            </div>
+                <div style="overflow-wrap: anywhere;">{{ comment.content }}</div>
+                <div id="divContainer{{comment.id}}" style="display: none;">
+                    <form method="POST"> {% csrf_token %}
+                        {{comment_form.content.label}}
+                        {{comment_form.content}}
+                        <input type="hidden" name="parent" value="{{comment.id}}" id="id_parent">
+                        <button class="btn btn-primary" type="submit">Wyślij</button>
+                    </form>
+                </div>
+        </div>
+        <hr>
+        {% if comment.children_comments.count > 0 %}
+                {% include 'blog/comments_tree.html' with comments=comment.children_comments.all %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}

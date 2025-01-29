@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block body %}
+    {% load crispy_forms_tags %}
+    
+    <div class="container mt-3">
+        <h1>Rejestracja</h1>
+        <form method="POST"> {% csrf_token %}
+            {% for field in register_form %}
+                <div class="form-floating mb-3 mt-3">
+                    {{ field }}
+                    {{ field.label_tag }}
+
+                    {% if register_form.validate_fields_v %}
+                        <div class="valid-feedback">
+                            Jest ok!
+                        </div>
+                        <div class="invalid-feedback">
+                            Pole '{{field.label_tag}}' jest niepoprawne.
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Zajerestruj się</button>
+        </form>
+        <p class="text-center">Masz już konto? <a href="/login">Zaloguj się</a>.</p>
+    </div>
+   
+{% endblock %}

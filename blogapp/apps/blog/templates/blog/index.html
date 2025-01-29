@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}BLOG{% endblock %}
+
+{% block body %}
+
+<div class="container mt-3 list-group">
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if has_previous %}
+        <li class="page-item"><a class="page-link" href="/blog?page=1&size={{size}}">Pierwszy</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page={{previous_page_number}}&size={{size}}">Poprzedni</a></li>
+      {% endif %}
+
+      <li class="page-item"><a class="page-link" href="#"><b>{{page}} / {{amount}}</b></a></li>
+
+      {% if has_next %}
+        <li class="page-item"><a class="page-link" href="/blog?page={{next_page_number}}&size={{size}}">Następny</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page={{amount}}&size={{size}}">Ostatni</a></li>
+      {% endif %}
+    </ul>
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Ilość na stronie</a></li>
+      <li class="page-item"><a class="page-link" href="/blog?page={{page}}&size=5">5</a></li>
+      <li class="page-item"><a class="page-link" href="/blog?page={{page}}&size=10">10</a></li>
+      <li class="page-item"><a class="page-link" href="/blog?page={{page}}&size=25">25</a></li>
+      <li class="page-item"><a class="page-link" href="/blog?page={{page}}&size=50">50</a></li>
+    </ul>
+  </nav>
+
+    <div class="row row-cols-2 row-cols-md-2 g-4">  
+        <div class="col-md-9"> <!-- Adjust the column width as needed -->
+            {% for obj in objects %}
+            <div class="card">
+                <div class="card-header">
+                  <i class="bi bi-file-person-fill"></i>
+                  <a href="/profiles/{{obj.author}}" style="text-decoration: none;">{{obj.author}}</a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">
+                      <i class="bi bi-clock"></i>  
+                      {{obj.time_passed_from_date}}
+                      <span class="badge bg-primary rounded-pill" style="float: right;">{{obj.number_of_views}}</span>
+                    </h6>
+                    <h3 class="card-title">{{obj.title}}</h3>
+                    <p class="card-text">{{obj.subtitle}}</p>
+                    <a href="{{obj.get_absolute_url}}" class="btn btn-primary">Czytaj dalej <i class="bi bi-forward"></i></a>
+
+                    {% if obj.author.user == user %}
+                    <button type="button" style="float: right;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{obj.slug}}">
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                    <div class="modal fade" id="staticBackdrop-{{obj.slug}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{obj.slug}}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel-{{obj.slug}}">Czy na pewno chcesz usunąć tego posta?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Usuń {{obj.title}}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                            <form method="POST" action="{{obj.get_absolute_delete_url}}"> {% csrf_token %}
+                              <button type="submit" class="btn btn-primary">Tak, usuń</button>
+                          </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <a href="{{obj.get_absolute_edit_url}}" class="btn btn-primary" style="float: right;">
+                      <i class="bi bi-pen"></i>
+                    </a>
+                    {% endif %}
+                    
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+        <div class="col-md-3"> <!-- Adjust the column width as needed -->
+            <div>
+              <div class="card mb-3" style="width: 18rem;">
+                  <a href="/blog/create/" class="btn btn-primary">
+                    <i class="bi bi-file-earmark-post-fill"></i>
+                    Napisz Posta
+                  </a>
+              </div>
+              <div class="card mb-3" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">REKLAMA</h5>
+                  <p class="card-text">REKLAMA.</p>
+                  <a href="#" class="btn btn-primary">REKLAMA</a>
+                </div>
+              </div>
+              <div class="card mb-3" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">REKLAMA</h5>
+                  <p class="card-text">REKLAMA.</p>
+                  <a href="#" class="btn btn-primary">REKLAMA</a>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if has_previous %}
+          <li class="page-item"><a class="page-link" href="/blog?page=1&size={{size}}">Pierwszy</a></li>
+          <li class="page-item"><a class="page-link" href="/blog?page={{previous_page_number}}&size={{size}}">Poprzedni</a></li>
+        {% endif %}
+  
+        <li class="page-item"><a class="page-link" href="#"><b>{{page}} / {{amount}}</b></a></li>
+  
+        {% if has_next %}
+          <li class="page-item"><a class="page-link" href="/blog?page={{next_page_number}}&size={{size}}">Następny</a></li>
+          <li class="page-item"><a class="page-link" href="/blog?page={{amount}}&size={{size}}">Ostatni</a></li>
+        {% endif %}
+      </ul>
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Ilość na stronie</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page=1&size=5">5</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page=1&size=10">10</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page=1&size=25">25</a></li>
+        <li class="page-item"><a class="page-link" href="/blog?page=1&size=50">50</a></li>
+      </ul>
+    </nav>
+</div>
+
+
+
+{% endblock %}

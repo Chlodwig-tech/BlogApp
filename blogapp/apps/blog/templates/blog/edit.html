@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Edytuj Post{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        <h1>Edytuj posta</h1>
+
+        {% for field in post_form %}
+            <div class="form-floating mb-3 mt-3">
+                {{ field }}
+                {{ field.label_tag }}
+            </div>
+        {% endfor %}
+        {{post_form.media}}
+        <button class="btn btn-primary" type="submit">Wyślij</button>
+    </div>
+{% endblock %}
